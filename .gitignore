@@ -84,3 +84,6 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+
+local-dev-environment.properties

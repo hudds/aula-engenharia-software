@@ -1,18 +1,22 @@
 package ccomp.engsoft.loja.model.estoque;
 
+import ccomp.engsoft.loja.model.Identifiable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-public class Produto {
+public class Produto implements Identifiable<String> {
     @Id
+    @NotBlank
     private String codigo;
-    @NotNull
+    @NotBlank
     private String nome;
     @NotNull
     @DecimalMin(value = "0.0")
@@ -64,5 +68,10 @@ public class Produto {
     @Override
     public int hashCode() {
         return Objects.hash(codigo);
+    }
+
+    @Override
+    public String getId() {
+        return getCodigo();
     }
 }
