@@ -8,7 +8,7 @@
       xmlns:p="http://primefaces.org/ui">
 <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Bem vindo</title>
+    <title>Produtos</title>
 </h:head>
 <h:body>
     <h1>Produtos no estoque</h1>
@@ -17,7 +17,7 @@
         <p:growl globalOnly="true">
             <p:autoUpdate/>
         </p:growl>
-        <h:panelGrid columns="3" title="Registrar Produto">
+        <h:panelGrid columns="3" title="Registrar Produto" >
             <p:outputLabel value="Código" for="codigo"/>
             <p:inputText id="codigo" value="#{produtoController.produto.codigo}"/>
             <p:message for="codigo"/>
@@ -38,11 +38,12 @@
         </h:panelGrid>
     </h:form>
     <h:form id="tabelaProdutos">
-        <p:dataTable var="produto" value="#{produtoController.produtos}">
+        <p:dataTable var="produto" value="#{produtoController.produtos}" sortMode="multiple">
             <p:column headerText="Código" sortBy="#{produto.codigo}">
                 <h:outputText value="#{produto.codigo}" />
+
             </p:column>
-            <p:column headerText="Nome" sortBy="#{produto.nome}">
+            <p:column headerText="Nome" sortBy="#{produto.nome}" filterBy="#{produto.nome}">
                 <h:outputText value="#{produto.nome}" />
             </p:column>
 
@@ -55,9 +56,20 @@
                 <h:outputText value="#{produto.quantidade}" sortBy="#{produto.quantidade}"/>
             </p:column>
             <p:column>
-               <p:commandButton value="Editar" action="#{produtoController.carregaProduto(produto.codigo)}" update=":formProduto"/>
+               <p:commandButton value="Editar" action="#{produtoController.carregaProduto(produto.codigo)}" update=":formProduto" icon="fa fa-pencil"/>
             </p:column>
+            <p:column>
+                <p:commandButton value="Apagar" action="#{produtoController.deletaProduto(produto.codigo)}" update="@form" icon="fa fa-trash">
+                    <p:confirm header="Confirmação" message="Você deseja deletar o produto #{produto.nome}?" icon="fa fa-info-circle"/>
+                </p:commandButton>
+            </p:column>
+
         </p:dataTable>
+
+        <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+        </p:confirmDialog>
     </h:form>
 </h:body>
 </html>

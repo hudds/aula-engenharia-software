@@ -48,13 +48,16 @@ public abstract class GenericDao<E extends Identifiable<I>, I> implements Serial
         em.merge(entity);
     }
 
-    public void delete(E entity){
-        if(get(entity.getId()) == null){
+    public void delete(I id){
+        E entity = get(id);
+        if(entity == null){
             throw new EntityNotFoundException("no entity with id " + entity.getId());
         }
         em.remove(entity);
     }
 
-
+    protected EntityManager getEntityManager(){
+        return this.getEntityManager();
+    }
 
 }

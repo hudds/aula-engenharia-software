@@ -33,8 +33,8 @@ public abstract class GenericCrudService<E extends Identifiable<I>, I> implement
     }
 
     @Transactional
-    public void delete(E entity){
-        getDao().delete(entity);
+    public void delete(I id){
+        getDao().delete(id);
     }
 
     protected abstract GenericDao<E, I> getDao();

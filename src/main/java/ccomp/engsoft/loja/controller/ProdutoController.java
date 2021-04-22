@@ -21,15 +21,18 @@ import java.util.List;
 @Named("produtoController")
 public class ProdutoController implements Serializable {
 
+
+
     @Autowired
     private ProdutoService produtoService;
-
+    private List<Produto> produtosCache = null;
     private Produto produto = new Produto();
     private boolean modoEdicao = false;
 
 
     private void limpar(){
         produto = new Produto();
+        this.produtosCache = null;
     }
 
     public void registraProduto(){
@@ -50,8 +53,18 @@ public class ProdutoController implements Serializable {
         modoEdicao = false;
     }
 
+    public void deletaProduto(String codigo){
+        System.out.println("deletando " + codigo);
+        this.produtoService.delete(codigo);
+        limpar();
+
+    }
+
     public List<Produto> getProdutos() {
-        return produtoService.getAll();
+        if(produtosCache == null){
+            produtosCache = produtoService.getAll();
+        };
+        return produtosCache;
     }
 
     public Produto getProduto() {
