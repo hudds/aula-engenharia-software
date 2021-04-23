@@ -37,6 +37,7 @@
             <p:commandButton value="Registrar" action="#{produtoController.registraProduto}" update="@form :tabelaProdutos"/>
         </h:panelGrid>
     </h:form>
+    <h2>Produtos registrados</h2>
     <h:form id="tabelaProdutos">
         <p:dataTable var="produto" value="#{produtoController.produtos}" sortMode="multiple">
             <p:column headerText="Código" sortBy="#{produto.codigo}">

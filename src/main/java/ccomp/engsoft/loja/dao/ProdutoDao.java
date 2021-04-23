@@ -12,7 +12,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProdutoDao extends GenericDao<Produto, String>{
@@ -26,26 +28,10 @@ public class ProdutoDao extends GenericDao<Produto, String>{
         return Produto.class;
     }
 
-    public List<Produto> getAll(String nome, BigDecimal valor) {
-        if(nome == null && valor == null){
-            return getAll();
-        }
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Produto> cr = cb.createQuery(Produto.class);
-        Root<Produto> root = cr.from(Produto.class);
-
-        List<Predicate> predicates = new ArrayList<>();
-
-        if(nome != null){
-            predicates.add(cb.like(root.get("nome"), "%" + nome+ "%"));
-        }
-
-        if(valor != null){
-            predicates.add(cb.equal(root.get("valorBase"), valor));
-        }
-
-        cr.select(root).where(predicates.toArray(new Predicate[0]));
-        TypedQuery<Produto> query = getEntityManager().createQuery(cr);
-        return query.getResultList();
+    public List<Produto> getAll(String nome, BigDecimal valorBase) {
+        Map<String, Object> attributes = new HashMap();
+        attributes.put("nome", nome);
+        attributes.put("valorBase", valorBase);
+        return createQuery(attributes, true).getResultList();
     }
 }

@@ -1,10 +1,8 @@
 package ccomp.engsoft.loja.controller;
 
-import ccomp.engsoft.loja.dao.ProdutoDao;
 import ccomp.engsoft.loja.model.estoque.Produto;
 import ccomp.engsoft.loja.service.ProdutoService;
 import ccomp.engsoft.loja.util.Messages;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +11,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityExistsException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,18 +18,21 @@ import java.util.List;
 @Named("produtoController")
 public class ProdutoController implements Serializable {
 
-
-
-    @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
     private List<Produto> produtosCache = null;
     private Produto produto = new Produto();
     private boolean modoEdicao = false;
+
+    @Inject
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
 
 
     private void limpar(){
         produto = new Produto();
         this.produtosCache = null;
+        this.modoEdicao = false;
     }
 
     public void registraProduto(){
@@ -50,7 +50,6 @@ public class ProdutoController implements Serializable {
             }
         }
         limpar();
-        modoEdicao = false;
     }
 
     public void deletaProduto(String codigo){

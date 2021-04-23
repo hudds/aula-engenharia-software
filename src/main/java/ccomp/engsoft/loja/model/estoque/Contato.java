@@ -18,10 +18,9 @@ public class Contato {
     @NotBlank
     private String nome;
     @NotBlank
-    @Pattern(regexp = "^([1-9]\\d)?9?\\d{4}\\d{4}$")
+    @Pattern(regexp = "([1-9]\\d)?9?\\d{4}\\d{4}")
     private String telefone;
     @Email
-    @NotBlank
     private String email;
 
     public Integer getId() {
@@ -41,9 +40,6 @@ public class Contato {
     }
 
     public void setTelefone(String telefone) {
-        if(telefone != null){
-            telefone = telefone.replaceAll("[^\\D]", "");
-        }
         this.telefone = telefone;
     }
 
@@ -53,5 +49,15 @@ public class Contato {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Contato{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

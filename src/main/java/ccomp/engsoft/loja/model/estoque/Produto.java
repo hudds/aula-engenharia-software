@@ -75,4 +75,14 @@ public class Produto implements Identifiable<String>, Serializable {
     public String getId() {
         return getCodigo();
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "codigo='" + codigo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", valorBase=" + valorBase +
+                ", quantidade=" + quantidade +
+                '}';
+    }
 }

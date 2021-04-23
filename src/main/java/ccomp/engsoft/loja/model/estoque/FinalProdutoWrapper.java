@@ -9,7 +9,7 @@ import java.util.Objects;
  **/
 public class FinalProdutoWrapper extends Produto {
     
-    final String codigo;
+    private final String codigo;
 
     public FinalProdutoWrapper(Produto produto) {
         this.codigo = produto.getCodigo();
@@ -25,7 +25,9 @@ public class FinalProdutoWrapper extends Produto {
 
     @Override
     @Deprecated
-    public void setCodigo(String codigo){}
+    public void setCodigo(String codigo){
+        throw new UnsupportedOperationException("nao e possivel alterar o codigo de um FinalProdutoWrapper");
+    }
 
     @Override
     public boolean equals(Object o) {
