@@ -18,15 +18,8 @@ Abaixo está um exemplo da configuração para o PostgreSQL:
 
         // driver do PostgreSQL
         hikariConfig.setDriverClassName("org.postgresql.Driver");
+        // outras configurações omitidas
         
-        // outras configurações não relevantes 
-        hikariConfig.setUsername(environment.getProperty("database.username"));
-        hikariConfig.setPassword(environment.getProperty("database.password"));
-        hikariConfig.setJdbcUrl(environment.getProperty("database.url"));
-        hikariConfig.setMinimumIdle(10);
-        hikariConfig.setMaximumPoolSize(20);
-        hikariConfig.setMaxLifetime(1200000);
-
         return hikariConfig;
 
     }
