@@ -37,8 +37,8 @@ public class JpaConfiguration {
     }
 
     @Bean
-    public DataSource dataSource(HikariConfig hikariConfig) throws PropertyVetoException {
-        HikariDataSource dataSource = new HikariDataSource(hikariConfig);
+    public DataSource dataSource(HikariConfig hikariConfigDev) throws PropertyVetoException {
+        HikariDataSource dataSource = new HikariDataSource(hikariConfigDev);
         return dataSource;
     }
 
