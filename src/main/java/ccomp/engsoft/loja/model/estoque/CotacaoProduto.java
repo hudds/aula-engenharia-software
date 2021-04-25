@@ -80,7 +80,6 @@ public class CotacaoProduto implements Identifiable<Integer> {
     public void setProduto(Produto produto) {
 
         if(produto != null) {
-            System.out.println("Alterando produto de uma cotacao. Nome produto: " + produto.getNome());
             this.nomeProduto = produto.getNome();
         }
         this.produto = produto;
@@ -92,12 +91,18 @@ public class CotacaoProduto implements Identifiable<Integer> {
         if (this == o) return true;
         if (!(o instanceof CotacaoProduto)) return false;
         CotacaoProduto that = (CotacaoProduto) o;
-        return Objects.equals(id, that.id);
+        if(id != null){
+            return Objects.equals(id, that.id);
+        }
+        return Objects.equals(id, that.id) && Objects.equals(nomeProduto, that.nomeProduto) && Objects.equals(valor, that.valor) && Objects.equals(contatoFornecedor, that.contatoFornecedor) && Objects.equals(produto, that.produto) && Objects.equals(dataAtualizacao, that.dataAtualizacao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        if(id != null){
+            return Objects.hash(id);
+        }
+        return Objects.hash(id, nomeProduto, valor, contatoFornecedor, produto, dataAtualizacao);
     }
 
     @Override

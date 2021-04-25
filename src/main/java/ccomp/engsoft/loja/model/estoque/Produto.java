@@ -58,17 +58,24 @@ public class Produto implements Identifiable<String>, Serializable {
         this.quantidade = quantidade;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Produto)) return false;
         Produto produto = (Produto) o;
-        return Objects.equals(codigo, produto.codigo);
+        if(getId() != null){
+            return Objects.equals(getId(), produto.getId());
+        }
+        return Objects.equals(codigo, produto.codigo) && Objects.equals(nome, produto.nome) && Objects.equals(valorBase, produto.valorBase) && Objects.equals(quantidade, produto.quantidade);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codigo);
+        if(getId() != null){
+            return Objects.hash(getId());
+        }
+        return Objects.hash(codigo, nome, valorBase, quantidade);
     }
 
     @Override

@@ -13,9 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @ViewScoped
@@ -26,9 +24,11 @@ public class CotacaoController implements Serializable {
     private final ProdutoService produtoService;
 
     private List<CotacaoProduto> cotacaoCache;
+    private List<CotacaoProduto> filteredCotacoes;
 
     private boolean modoEdicao;
     private CotacaoProduto cotacaoProduto;
+    private List<Produto> produtosCache;
 
     @Inject
     public CotacaoController(CotacaoProdutoService cotacaoProdutoService, ProdutoService produtoService) {
@@ -45,6 +45,7 @@ public class CotacaoController implements Serializable {
     }
 
     public void editaCotacao() {
+        cotacaoProduto.setDataAtualizacao(LocalDateTime.now());
         cotacaoProdutoService.update(cotacaoProduto);
         Messages.addInfo(null, "Cotação salva com sucesso.", null);
         limpar();
@@ -56,6 +57,7 @@ public class CotacaoController implements Serializable {
         this.cotacaoProduto.setProduto(new Produto());
         this.modoEdicao = false;
         this.cotacaoCache = null;
+        this.produtosCache = null;
     }
 
     public List<String> getNomesProdutosLike(String query) {
@@ -77,8 +79,10 @@ public class CotacaoController implements Serializable {
 
     public List<CotacaoProduto> getCotacoes() {
         if (this.cotacaoCache == null) {
+            System.out.println("inicializando cotacaoCache");
             cotacaoCache = cotacaoProdutoService.getAll();
         }
+        System.out.println("acessando cotacaoCache: " + cotacaoCache);
         return cotacaoCache;
     }
 
@@ -101,10 +105,14 @@ public class CotacaoController implements Serializable {
     }
 
     public List<Produto> getProdutos() {
-        new CotacaoProduto().setProduto(null);
-        List<Produto> all = this.produtoService.getAll();
-        System.out.println(all);
-        return all;
+        return this.produtoService.getAll();
     }
 
+    public List<CotacaoProduto> getFilteredCotacoes() {
+        return filteredCotacoes;
+    }
+
+    public void setFilteredCotacoes(List<CotacaoProduto> filteredCotacoes) {
+        this.filteredCotacoes = filteredCotacoes;
+    }
 }

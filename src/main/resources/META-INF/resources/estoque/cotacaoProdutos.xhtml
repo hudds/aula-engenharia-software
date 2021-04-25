@@ -54,14 +54,14 @@
             <p:inputText id="emailFornecedor" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.email}"/>
             <p:message for="emailFornecedor"/>
 
-            <p:commandButton value="Registrar" action="#{cotacaoController.insereCotacao}" update="@form :tabelaCotacao" rendered="#{!cotacaoController.modoEdicao}"/>
-            <p:commandButton value="Confirmar Edição" action="#{cotacaoController.editaCotacao}" update="@form :tabelaCotacao" rendered="#{cotacaoController.modoEdicao}"/>
+            <p:commandButton value="Registrar" action="#{cotacaoController.insereCotacao}" update="@form :tabelaCotacao" rendered="#{!cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
+            <p:commandButton value="Confirmar Edição" action="#{cotacaoController.editaCotacao}" update="@form :tabelaCotacao" rendered="#{cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
         </h:panelGrid>
     </h:form>
     <h:form id="tabelaCotacao">
-        <p:dataTable var="cotacao" value="#{cotacaoController.cotacoes}" sortMode="multiple">
+        <p:dataTable var="cotacao" widgetVar="dataTableCotacao" value="#{cotacaoController.cotacoes}" filteredValue="#{cotacaoController.filteredCotacoes}">
             <p:column headerText="Código do produto" sortBy="#{cotacao.produto.codigo}" filterBy="#{cotacao.produto.codigo}">
-                <h:outputText value="#{cotacao.produto.codigo}" rendered="#{cotacao.produto != null}"/>
+                <h:outputText value="#{cotacao.produto.codigo}"/>
             </p:column>
             <p:column headerText="Nome do produto" sortBy="#{cotacao.nomeProduto}" filterBy="#{cotacao.nomeProduto}">
                 <h:outputText value="#{cotacao.nomeProduto}" />
@@ -75,7 +75,7 @@
             <p:column headerText="Nome do Fornecedor" sortBy="#{cotacao.contatoFornecedor.nome}" filterBy="#{cotacao.contatoFornecedor.nome}">
                 <h:outputText value="#{cotacao.contatoFornecedor.nome}" />
             </p:column>
-            <p:column headerText="Telefone do Fornecedor" sortBy="#{cotacao.contatoFornecedor.telefone}" filterBy="#{cotacao.contatoFornecedor.telefone}">
+            <p:column headerText="Telefone do Fornecedor" sortBy="#{cotacao.contatoFornecedor.telefone}" filterBy="#{cotacao.contatoFornecedor.telefone}" >
                 <h:outputText value="#{cotacao.contatoFornecedor.telefone}" />
             </p:column>
             <p:column headerText="Ultima atualização" sortBy="#{cotacao.dataAtualizacao}" filterBy="#{cotacao.dataAtualizacao}">
@@ -87,7 +87,7 @@
                <p:commandButton value="Editar" action="#{cotacaoController.carregaCotacaoProduto(cotacao.id)}" update=":formCotacao" icon="fa fa-pencil"/>
             </p:column>
             <p:column>
-                <p:commandButton value="Apagar" action="#{cotacaoController.deletaCotacao(cotacao.id)}" update="@form" icon="fa fa-trash">
+                <p:commandButton value="Apagar" action="#{cotacaoController.deletaCotacao(cotacao.id)}" update="@form" icon="fa fa-trash" oncomplete="PF('dataTableCotacao').filter()">
                     <p:confirm header="Confirmação" message="Você deseja deletar esta cotação?" icon="fa fa-info-circle"/>
                 </p:commandButton>
             </p:column>

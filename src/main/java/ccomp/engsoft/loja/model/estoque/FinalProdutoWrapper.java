@@ -28,18 +28,4 @@ public class FinalProdutoWrapper extends Produto {
     public void setCodigo(String codigo){
         throw new UnsupportedOperationException("nao e possivel alterar o codigo de um FinalProdutoWrapper");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FinalProdutoWrapper)) return false;
-        if (!super.equals(o)) return false;
-        FinalProdutoWrapper that = (FinalProdutoWrapper) o;
-        return Objects.equals(codigo, that.codigo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), codigo);
-    }
 }

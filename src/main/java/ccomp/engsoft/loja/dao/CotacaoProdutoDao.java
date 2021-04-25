@@ -1,6 +1,7 @@
 package ccomp.engsoft.loja.dao;
 
 import ccomp.engsoft.loja.model.estoque.CotacaoProduto;
+import ccomp.engsoft.loja.util.DaoUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -42,28 +43,7 @@ public class CotacaoProdutoDao extends GenericDao<CotacaoProduto, Integer>{
     }
 
     public List<CotacaoProduto> getAll(String nomeProduto, String codigoProduto){
-        String jpql = "select c from CotacaoProduto c ";
-
-        String and = nomeProduto != null && codigoProduto != null ? "and " : "";
-
-        if(nomeProduto != null || codigoProduto != null){
-            jpql += "where ";
-            if(nomeProduto != null){
-                jpql += "c.nomeProduto like :pNome ";
-            }
-            if(codigoProduto != null){
-                jpql += and + "c.produto.codigo like :pCodigo ";
-            }
-        }
-
-        TypedQuery<CotacaoProduto> query = getEntityManager().createQuery(jpql, CotacaoProduto.class);
-        if(nomeProduto != null){
-            query.setParameter("pNome", "%"+nomeProduto+"%");
-        }
-
-        if(codigoProduto != null){
-            query.setParameter("pCodigo", "%"+codigoProduto+"%");
-        }
+        TypedQuery<CotacaoProduto> query = DaoUtil.criaQueryPorProduto(null, getEntityClass(), getEntityManager(), nomeProduto, codigoProduto);
         return query.getResultList();
     }
 }

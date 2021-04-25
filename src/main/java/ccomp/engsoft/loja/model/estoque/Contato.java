@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class Contato {
@@ -49,6 +50,25 @@ public class Contato {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contato)) return false;
+        Contato contato = (Contato) o;
+        if(this.id != null){
+            return Objects.equals(id, contato.id);
+        }
+        return Objects.equals(id, contato.id) && Objects.equals(nome, contato.nome) && Objects.equals(telefone, contato.telefone) && Objects.equals(email, contato.email);
+    }
+
+    @Override
+    public int hashCode() {
+        if (id != null){
+            return Objects.hash(id);
+        }
+        return Objects.hash(id, nome, telefone, email);
     }
 
     @Override
