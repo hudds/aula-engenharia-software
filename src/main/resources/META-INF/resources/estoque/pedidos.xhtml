@@ -5,87 +5,90 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Pedidos de Reabastecimento</title>
-</h:head>
-<h:body>
-    <h1>Pedidos de Reabastecimento</h1>
-    <h2>Fazer um pedido</h2>
-    <h:form id="formCotacao">
-        <f:passThroughAttribute name="autocomplete" value="off"/>
-        <p:growl globalOnly="true">
-            <p:autoUpdate/>
-        </p:growl>
-        <h:panelGrid columns="3" title="Fazer um pedido">
-            <p:outputLabel value="Produto desejado" for="produto" />
-                <p:selectOneMenu id="produto" value="#{pedidoController.pedido.produto}"
-                                 filter="true" filterMatchMode="contains" converter="#{produtoConverter}" required="false">
-                    <f:selectItem itemLabel="Nenhum Produto" noSelectionOption="true"/>
-                    <f:selectItems value="#{pedidoController.produtos}" var="produto" noSelectionValue="#{null}" itemLabel="#{produto.nome} - Código: #{produto.codigo}" itemValue="#{produto}"/>
-                    <p:ajax event="change" process="@this" update="@form"/>
-                </p:selectOneMenu>
-            <p:message for="produto"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="../_template.xhtml">
+    <ui:define name="tituloGuia">Pedidos Reabastecimento</ui:define>
+    <ui:define name="titulo">
+        <p:outputPanel>
+            <h2>Pedidos de Reabastecimento</h2>
+        </p:outputPanel>
+    </ui:define>
+    <ui:define name="conteudo">
+        <h:form id="formCotacao">
+            <f:passThroughAttribute name="autocomplete" value="off"/>
+            <p:growl globalOnly="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <h:panelGrid columns="3" title="Fazer um pedido">
+                <p:outputLabel value="Produto desejado" for="produto" />
+                    <p:selectOneMenu id="produto" value="#{pedidoController.pedido.produto}"
+                                     filter="true" filterMatchMode="contains" converter="#{produtoConverter}" required="false">
+                        <f:selectItem itemLabel="Nenhum Produto" noSelectionOption="true"/>
+                        <f:selectItems value="#{pedidoController.produtos}" var="produto" noSelectionValue="#{null}" itemLabel="#{produto.nome} - Código: #{produto.codigo}" itemValue="#{produto}"/>
+                        <p:ajax event="change" process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                <p:message for="produto"/>
 
-            <p:outputLabel value="Nome do Produto desejado" for="nomeProduto"/>
-            <p:inputText id="nomeProduto" value="#{pedidoController.pedido.nomeProduto}"/>
-            <p:message for="nomeProduto"/>
+                <p:outputLabel value="Nome do Produto desejado" for="nomeProduto"/>
+                <p:inputText id="nomeProduto" value="#{pedidoController.pedido.nomeProduto}"/>
+                <p:message for="nomeProduto"/>
 
-            <p:outputLabel value="Quantidade desejada" for="quantidade"/>
-            <p:inputNumber id="quantidade" decimalPlaces="0" minValue="0" value="#{pedidoController.pedido.quantidade}"/>
-            <p:message for="quantidade"/>
+                <p:outputLabel value="Quantidade desejada" for="quantidade"/>
+                <p:inputNumber id="quantidade" decimalPlaces="0" minValue="0" value="#{pedidoController.pedido.quantidade}"/>
+                <p:message for="quantidade"/>
 
-            <p:outputLabel value="Nome do cliente que requisitou" for="nomeCliente"/>
-            <p:inputText id="nomeCliente" value="#{pedidoController.pedido.contatoCliente.nome}"/>
-            <p:message for="nomeCliente"/>
+                <p:outputLabel value="Nome do cliente que requisitou" for="nomeCliente"/>
+                <p:inputText id="nomeCliente" value="#{pedidoController.pedido.contatoCliente.nome}"/>
+                <p:message for="nomeCliente"/>
 
-            <p:outputLabel value="Telefone do cliente" for="telefoneCliente"/>
-            <p:inputText id="telefoneCliente" value="#{pedidoController.pedido.contatoCliente.telefone}"/>
-            <p:message for="telefoneCliente"/>
+                <p:outputLabel value="Telefone do cliente" for="telefoneCliente"/>
+                <p:inputText id="telefoneCliente" value="#{pedidoController.pedido.contatoCliente.telefone}"/>
+                <p:message for="telefoneCliente"/>
 
-            <p:outputLabel value="Email do cliente" for="emailCliente"/>
-            <p:inputText id="emailCliente" value="#{pedidoController.pedido.contatoCliente.email}"/>
-            <p:message for="emailCliente"/>
+                <p:outputLabel value="Email do cliente" for="emailCliente"/>
+                <p:inputText id="emailCliente" value="#{pedidoController.pedido.contatoCliente.email}"/>
+                <p:message for="emailCliente"/>
 
-            <p:commandButton value="Registrar" action="#{pedidoController.fazerPedido}" update="@form :tabelaPedido" oncomplete="PF('dataTablePedido').filter()"/>
-        </h:panelGrid>
-    </h:form>
-    <h:form id="tabelaPedido">
-        <p:dataTable var="pedido" widgetVar="dataTablePedido" value="#{pedidoController.pedidos}" filteredValue="#{pedidoController.filteredPedidos}">
-            <p:column headerText="Código do produto" sortBy="#{pedido.produto.codigo}" filterBy="#{pedido.produto.codigo}">
-                <h:outputText value="#{pedido.produto.codigo}"/>
-            </p:column>
-            <p:column headerText="Nome do produto" sortBy="#{pedido.nomeProduto}" filterBy="#{pedido.nomeProduto}">
-                <h:outputText value="#{pedido.nomeProduto}" />
-            </p:column>
+                <p:commandButton value="Registrar" action="#{pedidoController.fazerPedido}" update="@form :tabelaPedido" oncomplete="PF('dataTablePedido').filter()"/>
+            </h:panelGrid>
+        </h:form>
+        <h:form id="tabelaPedido">
+            <p:dataTable var="pedido" widgetVar="dataTablePedido" value="#{pedidoController.pedidos}" filteredValue="#{pedidoController.filteredPedidos}">
+                <p:column headerText="Código do produto" sortBy="#{pedido.produto.codigo}" filterBy="#{pedido.produto.codigo}">
+                    <h:outputText value="#{pedido.produto.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome do produto" sortBy="#{pedido.nomeProduto}" filterBy="#{pedido.nomeProduto}">
+                    <h:outputText value="#{pedido.nomeProduto}" />
+                </p:column>
 
-            <p:column headerText="Quantidade requisitada" sortBy="#{pedido.quantidade}">
-                <h:outputText value="#{pedido.quantidade}" />
-            </p:column>
-            <p:column headerText="Nome do cliente" sortBy="#{pedido.contatoCliente.nome}" filterBy="#{pedido.contatoCliente.nome}">
-                <h:outputText value="#{pedido.contatoCliente.nome}" />
-            </p:column>
-            <p:column headerText="Telefone do Fornecedor" sortBy="#{pedido.contatoCliente.telefone}" filterBy="#{pedido.contatoCliente.telefone}" >
-                <h:outputText value="#{pedido.contatoCliente.telefone}" />
-            </p:column>
-            <p:column headerText="Ultima atualização" sortBy="#{pedido.data}" filterBy="#{pedido.data}">
-                <h:outputText value="#{pedido.data}" >
-                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
-                </h:outputText>
-            </p:column>
-            <p:column>
-                <p:commandButton value="Apagar" action="#{pedidoController.deletarPedido(pedido.id)}" update="@form" icon="fa fa-trash" oncomplete="PF('dataTablePedido').filter()">
-                    <p:confirm header="Confirmação" message="Você deseja deletar este pedido?" icon="fa fa-info-circle"/>
-                </p:commandButton>
-            </p:column>
+                <p:column headerText="Quantidade requisitada" sortBy="#{pedido.quantidade}">
+                    <h:outputText value="#{pedido.quantidade}" />
+                </p:column>
+                <p:column headerText="Nome do cliente" sortBy="#{pedido.contatoCliente.nome}" filterBy="#{pedido.contatoCliente.nome}">
+                    <h:outputText value="#{pedido.contatoCliente.nome}" />
+                </p:column>
+                <p:column headerText="Telefone do Fornecedor" sortBy="#{pedido.contatoCliente.telefone}" filterBy="#{pedido.contatoCliente.telefone}" >
+                    <h:outputText value="#{pedido.contatoCliente.telefone}" />
+                </p:column>
+                <p:column headerText="Ultima atualização" sortBy="#{pedido.data}" filterBy="#{pedido.data}">
+                    <h:outputText value="#{pedido.data}" >
+                        <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Apagar" action="#{pedidoController.deletarPedido(pedido.id)}" update="@form" icon="fa fa-trash" oncomplete="PF('dataTablePedido').filter()">
+                        <p:confirm header="Confirmação" message="Você deseja deletar este pedido?" icon="fa fa-info-circle"/>
+                    </p:commandButton>
+                </p:column>
 
-        </p:dataTable>
+            </p:dataTable>
 
-        <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
-            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
-        </p:confirmDialog>
-    </h:form>
-</h:body>
+            <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+    </ui:composition>
 </html>

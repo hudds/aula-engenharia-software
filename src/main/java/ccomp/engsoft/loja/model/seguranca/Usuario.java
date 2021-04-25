@@ -1,17 +1,24 @@
 package ccomp.engsoft.loja.model.seguranca;
 
+import ccomp.engsoft.loja.model.Identifiable;
 import ccomp.engsoft.loja.model.seguranca.NivelAcesso;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
-public class Usuario {
+public class Usuario implements Identifiable<Integer>, UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank
     @Column(unique = true)
@@ -55,6 +62,7 @@ public class Usuario {
         this.senha = senha;
     }
 
+
     public NivelAcesso getNivelAcesso() {
         return nivelAcesso;
     }
@@ -74,5 +82,40 @@ public class Usuario {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.nivelAcesso.getRoles();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nomeDeUsuario;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

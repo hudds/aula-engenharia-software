@@ -53,5 +53,17 @@ database.url=INSIRA A URL DO BANCO DE DADOS AQUI
 
 Um exemplo de URL para o MySQL seria: `jdbc:mysql://localhost:3306/loja_engsoft`. Neste exemplo o nome do banco de dados é `loja_engsoft`. É necessário criar um banco de dados com o nome definido na URL. Basta criar o banco de dados e ele já estará pronto para ser usado.
 
+# Usuário default
+
+É necessário inserir um usuário default diretamente no banco de dados.
+Primeiro rode a aplicação para que as tabelas sejam criadas. Depois insira dos dados do usuário default.
+A senha deve estar encriptada com a criptografia BCrypt.
+Abaixo um script SQL para inserção de um usuário 'admin', com a senha 'admin':
+``
+INSERT INTO usuario (nome, nome_de_usuario, senha, nivel_acesso) values 
+    ('admin', 'admin', '$2y$12$Q9M8qkJC9An5rVplcPY.NeoYEG7hWP4Rl8uI2OPMo9HNR67f.F0UC', "ADMINISTRADOR");
+``
+
+
 # Rodando o Programa
 Basta rodar a classe `src/main/java/ccomp.engsoft.loja.SistemaLojaApplication.java`.
