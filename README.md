@@ -59,10 +59,11 @@ Um exemplo de URL para o MySQL seria: `jdbc:mysql://localhost:3306/loja_engsoft`
 Primeiro rode a aplicação para que as tabelas sejam criadas. Depois insira dos dados do usuário default.
 A senha deve estar encriptada com a criptografia BCrypt.
 Abaixo um script SQL para inserção de um usuário 'admin', com a senha 'admin':
-``
+
+```
 INSERT INTO usuario (nome, nome_de_usuario, senha, nivel_acesso) values 
     ('admin', 'admin', '$2y$12$Q9M8qkJC9An5rVplcPY.NeoYEG7hWP4Rl8uI2OPMo9HNR67f.F0UC', "ADMINISTRADOR");
-``
+```
 
 
 # Rodando o Programa
