@@ -5,99 +5,104 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Cotações</title>
-</h:head>
-<h:body>
-    <h1>Cotações dos produtos</h1>
-    <h2>Registrar nova cotação</h2>
-    <h:form id="formCotacao">
-        <f:passThroughAttribute name="autocomplete" value="off"/>
-        <p:growl globalOnly="true">
-            <p:autoUpdate/>
-        </p:growl>
-        <h:panelGrid columns="3" title="Registrar Cotação">
-            <p:outputLabel value="Produto" for="produto" />
-                <p:selectOneMenu id="produto" value="#{cotacaoController.cotacaoProduto.produto}"
-                                 filter="true" filterMatchMode="contains" converter="#{produtoConverter}" required="false">
-                    <f:selectItem itemLabel="Nenhum Produto" noSelectionOption="true"/>
-                    <f:selectItems value="#{cotacaoController.produtos}" var="produto" noSelectionValue="#{null}" itemLabel="#{produto.nome} - Código: #{produto.codigo}" itemValue="#{produto}"/>
-                    <p:ajax event="change" process="@this" update="@form"/>
-                </p:selectOneMenu>
-            <p:message for="produto"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-            <p:outputLabel value="Nome do Produto" for="nomeProduto"/>
-            <p:autoComplete id="nomeProduto" dropdown="true" value="#{cotacaoController.cotacaoProduto.nomeProduto}"
-                            completeMethod="#{cotacaoController.getNomesProdutosLike}" scrollHeight="250"/>
-            <p:message for="nomeProduto"/>
+<ui:composition template="../_template.xhtml">
+    <ui:define name="tituloGuia">Cotações dos produtos</ui:define>
+    <ui:define name="titulo">
+        <p:outputPanel>
+            <h1>Cotações dos produtos</h1>
+        </p:outputPanel>
+    </ui:define>
+    <ui:define name="conteudo">
+        <h2>Registrar nova cotação</h2>
+        <h:form id="formCotacao">
+            <f:passThroughAttribute name="autocomplete" value="off"/>
+            <p:growl globalOnly="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <h:panelGrid columns="3" title="Registrar Cotação">
+                <p:outputLabel value="Produto" for="produto" />
+                    <p:selectOneMenu id="produto" value="#{cotacaoController.cotacaoProduto.produto}"
+                                     filter="true" filterMatchMode="contains" converter="#{produtoConverter}" required="false">
+                        <f:selectItem itemLabel="Nenhum Produto" noSelectionOption="true"/>
+                        <f:selectItems value="#{cotacaoController.produtos}" var="produto" noSelectionValue="#{null}" itemLabel="#{produto.nome} - Código: #{produto.codigo}" itemValue="#{produto}"/>
+                        <p:ajax event="change" process="@this" update="@form"/>
+                    </p:selectOneMenu>
+                <p:message for="produto"/>
 
-            <p:outputLabel value="Valor" for="valor"/>
-            <p:inputNumber id="valor" decimalPlaces="2" minValue="0" value="#{cotacaoController.cotacaoProduto.valor}" symbol="R$ "/>
-            <p:message for="valor"/>
+                <p:outputLabel value="Nome do Produto" for="nomeProduto"/>
+                <p:autoComplete id="nomeProduto" dropdown="true" value="#{cotacaoController.cotacaoProduto.nomeProduto}"
+                                completeMethod="#{cotacaoController.getNomesProdutosLike}" scrollHeight="250"/>
+                <p:message for="nomeProduto"/>
 
-            <p:outputLabel value="Nome do fornecedor" for="nomeFornecedor"/>
-            <p:autoComplete id="nomeFornecedor" dropdown="true" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.nome}"
-                            completeMethod="#{cotacaoController.getNomesFornecedoresLike}" scrollHeight="250" autocomplete="off">
-                <p:ajax event="change" process="@this"/>
-            </p:autoComplete>
-            <p:message for="nomeFornecedor"/>
+                <p:outputLabel value="Valor" for="valor"/>
+                <p:inputNumber id="valor" decimalPlaces="2" minValue="0" value="#{cotacaoController.cotacaoProduto.valor}" symbol="R$ "/>
+                <p:message for="valor"/>
 
-            <p:outputLabel value="Telefone do fornecedor" for="telefoneFornecedor"/>
-            <p:autoComplete id="telefoneFornecedor" dropdown="true" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.telefone}"
-                            completeMethod="#{cotacaoController.getTelefonesByNomeFornecedor()}" scrollHeight="250">
-            </p:autoComplete>
-            <p:message for="telefoneFornecedor"/>
+                <p:outputLabel value="Nome do fornecedor" for="nomeFornecedor"/>
+                <p:autoComplete id="nomeFornecedor" dropdown="true" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.nome}"
+                                completeMethod="#{cotacaoController.getNomesFornecedoresLike}" scrollHeight="250" autocomplete="off">
+                    <p:ajax event="change" process="@this"/>
+                </p:autoComplete>
+                <p:message for="nomeFornecedor"/>
 
-            <p:outputLabel value="Email do fornecedor" for="emailFornecedor"/>
-            <p:inputText id="emailFornecedor" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.email}"/>
-            <p:message for="emailFornecedor"/>
+                <p:outputLabel value="Telefone do fornecedor" for="telefoneFornecedor"/>
+                <p:autoComplete id="telefoneFornecedor" dropdown="true" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.telefone}"
+                                completeMethod="#{cotacaoController.getTelefonesByNomeFornecedor()}" scrollHeight="250">
+                </p:autoComplete>
+                <p:message for="telefoneFornecedor"/>
 
-            <p:commandButton value="Registrar" action="#{cotacaoController.insereCotacao}" update="@form :tabelaCotacao" rendered="#{!cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
-            <p:commandButton value="Confirmar Edição" action="#{cotacaoController.editaCotacao}" update="@form :tabelaCotacao" rendered="#{cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
-        </h:panelGrid>
-    </h:form>
-    <h:form id="tabelaCotacao">
-        <p:dataTable var="cotacao" widgetVar="dataTableCotacao" value="#{cotacaoController.cotacoes}" filteredValue="#{cotacaoController.filteredCotacoes}">
-            <p:column headerText="Código do produto" sortBy="#{cotacao.produto.codigo}" filterBy="#{cotacao.produto.codigo}">
-                <h:outputText value="#{cotacao.produto.codigo}"/>
-            </p:column>
-            <p:column headerText="Nome do produto" sortBy="#{cotacao.nomeProduto}" filterBy="#{cotacao.nomeProduto}">
-                <h:outputText value="#{cotacao.nomeProduto}" />
-            </p:column>
+                <p:outputLabel value="Email do fornecedor" for="emailFornecedor"/>
+                <p:inputText id="emailFornecedor" value="#{cotacaoController.cotacaoProduto.contatoFornecedor.email}"/>
+                <p:message for="emailFornecedor"/>
 
-            <p:column headerText="Valor" sortBy="#{cotacao.valor}">
-                <h:outputText value="#{cotacao.valor}" >
-                    <f:convertNumber type="currency" currencySymbol="R$" />
-                </h:outputText>
-            </p:column>
-            <p:column headerText="Nome do Fornecedor" sortBy="#{cotacao.contatoFornecedor.nome}" filterBy="#{cotacao.contatoFornecedor.nome}">
-                <h:outputText value="#{cotacao.contatoFornecedor.nome}" />
-            </p:column>
-            <p:column headerText="Telefone do Fornecedor" sortBy="#{cotacao.contatoFornecedor.telefone}" filterBy="#{cotacao.contatoFornecedor.telefone}" >
-                <h:outputText value="#{cotacao.contatoFornecedor.telefone}" />
-            </p:column>
-            <p:column headerText="Ultima atualização" sortBy="#{cotacao.dataAtualizacao}" filterBy="#{cotacao.dataAtualizacao}">
-                <h:outputText value="#{cotacao.dataAtualizacao}" >
-                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
-                </h:outputText>
-            </p:column>
-            <p:column>
-               <p:commandButton value="Editar" action="#{cotacaoController.carregaCotacaoProduto(cotacao.id)}" update=":formCotacao" icon="fa fa-pencil"/>
-            </p:column>
-            <p:column>
-                <p:commandButton value="Apagar" action="#{cotacaoController.deletaCotacao(cotacao.id)}" update="@form" icon="fa fa-trash" oncomplete="PF('dataTableCotacao').filter()">
-                    <p:confirm header="Confirmação" message="Você deseja deletar esta cotação?" icon="fa fa-info-circle"/>
-                </p:commandButton>
-            </p:column>
+                <p:commandButton value="Registrar" action="#{cotacaoController.insereCotacao}" update="@form :tabelaCotacao" rendered="#{!cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
+                <p:commandButton value="Confirmar Edição" action="#{cotacaoController.editaCotacao}" update="@form :tabelaCotacao" rendered="#{cotacaoController.modoEdicao}" oncomplete="PF('dataTableCotacao').filter()"/>
+            </h:panelGrid>
+        </h:form>
+        <h:form id="tabelaCotacao">
+            <p:dataTable var="cotacao" widgetVar="dataTableCotacao" value="#{cotacaoController.cotacoes}" filteredValue="#{cotacaoController.filteredCotacoes}">
+                <p:column headerText="Código do produto" sortBy="#{cotacao.produto.codigo}" filterBy="#{cotacao.produto.codigo}">
+                    <h:outputText value="#{cotacao.produto.codigo}"/>
+                </p:column>
+                <p:column headerText="Nome do produto" sortBy="#{cotacao.nomeProduto}" filterBy="#{cotacao.nomeProduto}">
+                    <h:outputText value="#{cotacao.nomeProduto}" />
+                </p:column>
 
-        </p:dataTable>
+                <p:column headerText="Valor" sortBy="#{cotacao.valor}">
+                    <h:outputText value="#{cotacao.valor}" >
+                        <f:convertNumber type="currency" currencySymbol="R$" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Nome do Fornecedor" sortBy="#{cotacao.contatoFornecedor.nome}" filterBy="#{cotacao.contatoFornecedor.nome}">
+                    <h:outputText value="#{cotacao.contatoFornecedor.nome}" />
+                </p:column>
+                <p:column headerText="Telefone do Fornecedor" sortBy="#{cotacao.contatoFornecedor.telefone}" filterBy="#{cotacao.contatoFornecedor.telefone}" >
+                    <h:outputText value="#{cotacao.contatoFornecedor.telefone}" />
+                </p:column>
+                <p:column headerText="Ultima atualização" sortBy="#{cotacao.dataAtualizacao}" filterBy="#{cotacao.dataAtualizacao}">
+                    <h:outputText value="#{cotacao.dataAtualizacao}" >
+                        <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                   <p:commandButton value="Editar" action="#{cotacaoController.carregaCotacaoProduto(cotacao.id)}" update=":formCotacao" icon="fa fa-pencil"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Apagar" action="#{cotacaoController.deletaCotacao(cotacao.id)}" update="@form" icon="fa fa-trash" oncomplete="PF('dataTableCotacao').filter()">
+                        <p:confirm header="Confirmação" message="Você deseja deletar esta cotação?" icon="fa fa-info-circle"/>
+                    </p:commandButton>
+                </p:column>
 
-        <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
-            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
-        </p:confirmDialog>
-    </h:form>
-</h:body>
+            </p:dataTable>
+
+            <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>

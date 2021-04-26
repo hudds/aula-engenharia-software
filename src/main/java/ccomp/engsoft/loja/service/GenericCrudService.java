@@ -3,6 +3,7 @@ package ccomp.engsoft.loja.service;
 import ccomp.engsoft.loja.dao.GenericDao;
 import ccomp.engsoft.loja.model.Identifiable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -10,8 +11,7 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
-@Component
-
+@Service
 public abstract class GenericCrudService<E extends Identifiable<I>, I> implements Serializable {
 
     public E get(I id){

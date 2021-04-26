@@ -79,10 +79,8 @@ public class CotacaoController implements Serializable {
 
     public List<CotacaoProduto> getCotacoes() {
         if (this.cotacaoCache == null) {
-            System.out.println("inicializando cotacaoCache");
             cotacaoCache = cotacaoProdutoService.getAll();
         }
-        System.out.println("acessando cotacaoCache: " + cotacaoCache);
         return cotacaoCache;
     }
 

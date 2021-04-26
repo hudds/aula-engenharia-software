@@ -5,72 +5,77 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-<h:head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Produtos</title>
-</h:head>
-<h:body>
-    <h1>Produtos no estoque</h1>
-    <h2>Registrar produto</h2>
-    <h:form id="formProduto">
-        <p:growl globalOnly="true">
-            <p:autoUpdate/>
-        </p:growl>
-        <h:panelGrid columns="3" title="Registrar Produto" >
-            <p:outputLabel value="Código" for="codigo"/>
-            <p:inputText id="codigo" value="#{produtoController.produto.codigo}"/>
-            <p:message for="codigo"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-            <p:outputLabel value="Nome" for="nome"/>
-            <p:inputText id="nome" value="#{produtoController.produto.nome}"/>
-            <p:message for="nome"/>
+<ui:composition template="../_template.xhtml">
+    <ui:define name="tituloGuia">Produtos no estoque</ui:define>
+    <ui:define name="titulo">
+        <p:outputPanel>
+            <h1>Produtos no estoque</h1>
+        </p:outputPanel>
+    </ui:define>
+    <ui:define name="conteudo">
+        <h2>Registrar produto</h2>
+        <h:form id="formProduto">
+            <p:growl globalOnly="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <h:panelGrid columns="3" title="Registrar Produto" >
+                <p:outputLabel value="Código" for="codigo"/>
+                <p:inputText id="codigo" value="#{produtoController.produto.codigo}"/>
+                <p:message for="codigo"/>
 
-            <p:outputLabel value="Valor" for="valor"/>
-            <p:inputNumber id="valor" decimalPlaces="2" minValue="0" value="#{produtoController.produto.valorBase}" symbol="R$ "/>
-            <p:message for="valor"/>
+                <p:outputLabel value="Nome" for="nome"/>
+                <p:inputText id="nome" value="#{produtoController.produto.nome}"/>
+                <p:message for="nome"/>
 
-            <p:outputLabel value="Quantidade em estoque" for="quantidade"/>
-            <p:inputNumber id="quantidade" decimalPlaces="0" minValue="0" value="#{produtoController.produto.quantidade}" />
-            <p:message for="valor"/>
+                <p:outputLabel value="Valor" for="valor"/>
+                <p:inputNumber id="valor" decimalPlaces="2" minValue="0" value="#{produtoController.produto.valorBase}" symbol="R$ "/>
+                <p:message for="valor"/>
 
-            <p:commandButton value="Registrar" action="#{produtoController.registraProduto}" update="@form :tabelaProdutos"/>
-        </h:panelGrid>
-    </h:form>
-    <h2>Produtos registrados</h2>
-    <h:form id="tabelaProdutos">
-        <p:dataTable var="produto" value="#{produtoController.produtos}" sortMode="multiple">
-            <p:column headerText="Código" sortBy="#{produto.codigo}">
-                <h:outputText value="#{produto.codigo}" />
+                <p:outputLabel value="Quantidade em estoque" for="quantidade"/>
+                <p:inputNumber id="quantidade" decimalPlaces="0" minValue="0" value="#{produtoController.produto.quantidade}" />
+                <p:message for="valor"/>
 
-            </p:column>
-            <p:column headerText="Nome" sortBy="#{produto.nome}" filterBy="#{produto.nome}">
-                <h:outputText value="#{produto.nome}" />
-            </p:column>
+                <p:commandButton value="Registrar" action="#{produtoController.registraProduto}" update="@form :tabelaProdutos"/>
+            </h:panelGrid>
+        </h:form>
+        <h2>Produtos registrados</h2>
+        <h:form id="tabelaProdutos">
+            <p:dataTable var="produto" value="#{produtoController.produtos}" sortMode="multiple">
+                <p:column headerText="Código" sortBy="#{produto.codigo}">
+                    <h:outputText value="#{produto.codigo}" />
 
-            <p:column headerText="valor" sortBy="#{produto.valorBase}">
-                <h:outputText value="#{produto.valorBase}" >
-                    <f:convertNumber type="currency" currencySymbol="R$" />
-                </h:outputText>
-            </p:column>
-            <p:column headerText="Quantidade em estoque" sortBy="#{produto.quantidade}">
-                <h:outputText value="#{produto.quantidade}" sortBy="#{produto.quantidade}"/>
-            </p:column>
-            <p:column>
-               <p:commandButton value="Editar" action="#{produtoController.carregaProduto(produto.codigo)}" update=":formProduto" icon="fa fa-pencil"/>
-            </p:column>
-            <p:column>
-                <p:commandButton value="Apagar" action="#{produtoController.deletaProduto(produto.codigo)}" update="@form" icon="fa fa-trash">
-                    <p:confirm header="Confirmação" message="Você deseja deletar o produto #{produto.nome}?" icon="fa fa-info-circle"/>
-                </p:commandButton>
-            </p:column>
+                </p:column>
+                <p:column headerText="Nome" sortBy="#{produto.nome}" filterBy="#{produto.nome}">
+                    <h:outputText value="#{produto.nome}" />
+                </p:column>
 
-        </p:dataTable>
+                <p:column headerText="valor" sortBy="#{produto.valorBase}">
+                    <h:outputText value="#{produto.valorBase}" >
+                        <f:convertNumber type="currency" currencySymbol="R$" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Quantidade em estoque" sortBy="#{produto.quantidade}">
+                    <h:outputText value="#{produto.quantidade}" sortBy="#{produto.quantidade}"/>
+                </p:column>
+                <p:column>
+                   <p:commandButton value="Editar" action="#{produtoController.carregaProduto(produto.codigo)}" update=":formProduto" icon="fa fa-pencil"/>
+                </p:column>
+                <p:column>
+                    <p:commandButton value="Apagar" action="#{produtoController.deletaProduto(produto.codigo)}" update="@form" icon="fa fa-trash">
+                        <p:confirm header="Confirmação" message="Você deseja deletar o produto #{produto.nome}?" icon="fa fa-info-circle"/>
+                    </p:commandButton>
+                </p:column>
 
-        <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
-            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
-            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
-        </p:confirmDialog>
-    </h:form>
-</h:body>
+            </p:dataTable>
+
+            <p:confirmDialog id="confirmationDialog" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes"/>
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="pt-BR"
+      xml:lang="pt-BR"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="../_template.xhtml">
+    <ui:define name="tituloGuia">Alterar Senha</ui:define>
+    <ui:define name="titulo">
+        <p:outputPanel>
+            <h1>Alterar senha</h1>
+        </p:outputPanel>
+    </ui:define>
+    <ui:define name="conteudo">
+        <h:form id="alterarSenhaForm">
+            <p:growl globalOnly="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <h:panelGrid columns="3">
+
+                <p:outputLabel value="Insira sua senha atual" for="senhaAtual"/>
+                <p:password id="senhaAtual" value="#{usuarioController.senha.senhaAtual}" validator="#{usuarioController.checkSenhaAtual}"/>
+                <p:message for="senhaAtual"/>
+
+                <p:outputLabel value="Insira sua nova senha" for="novaSenha" />
+                <p:password id="novaSenha" value="#{usuarioController.senha.senha}" required="true" feedback="true" redisplay="true">
+                    <p:ajax event="change" update="@this" process="@this"/>
+                </p:password>
+                <p:message for="novaSenha">
+                    <p:autoUpdate/>
+                </p:message>
+
+                <p:outputLabel value="Confirme sua nova senha" for="confirmacaoSenha"/>
+                <p:password id="confirmacaoSenha" value="#{usuarioController.senha.confirmacao}" required="true" validator="#{usuarioController.checkSenhaConfirmacao}"
+                            redisplay="true">
+                    <p:ajax event="change" update="@this" process="@this"/>
+                </p:password>
+                <p:message for="confirmacaoSenha">
+                    <p:autoUpdate/>
+                </p:message>
+
+                <p:commandButton value="Alterar senha" action="#{usuarioController.editaSenha}" update="@form"/>
+
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+</html>

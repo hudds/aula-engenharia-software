@@ -17,20 +17,33 @@
 
             <p:menubar>
 
-                <sec:authenticated>
-                    <p:menuitem value="Encerrar sessão"/>
-                </sec:authenticated>
+                <sec:authorize access="isAuthenticated()">
+                    <p:menuitem value="Encerrar sessão" url="/logout"/>
+                </sec:authorize>
+
+                <p:submenu label="Configuração de usuário">
+                    <sec:authorize access="isAuthenticated()">
+                        <p:menuitem value="Alterar Senha" url="/usuario/alterarSenha.xhtml"/>
+                    </sec:authorize>
+                </p:submenu>
+
                 <p:submenu label="Produtos">
-                    <sec:authorize access="hasAnyRole('ADMIN', 'GERENTE', 'FUNCIONARIO')">
-                        <p:menuitem value="Cotações" url="/estoque/cotacaoProdutos.xhtml?faces-redirect=true"/>
+                    <sec:authorize access="hasAnyRole('ADMIN', 'GERENTE')">
+                        <p:menuitem value="Cotações" url="/estoque/cotacaoProdutos.xhtml"/>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <p:menuitem value="Pedidos" url="/estoque/pedidos.xhtml"/>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <p:menuitem value="Produtos" url="/estoque/produtos.xhtml"/>
                     </sec:authorize>
                 </p:submenu>
             </p:menubar>
         </h:form>
-    <h1><ui:insert name="titulo"></ui:insert></h1>
+    <ui:insert name="titulo"/>
     </header>
     <main id="conteudo">
-        <ui:insert name="conteudo"></ui:insert>
+        <ui:insert name="conteudo"/>
     </main>
 </h:body>
 </html>

@@ -6,16 +6,20 @@ import ccomp.engsoft.loja.model.seguranca.Usuario;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 
-@Component
+@Service
 public class UsuarioService extends GenericCrudService<Usuario, Integer> implements UserDetailsService {
-    final UsuarioDao dao;
+    private final UsuarioDao dao;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioDao dao) {
+    public UsuarioService(UsuarioDao dao, PasswordEncoder passwordEncoder) {
         this.dao = dao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,18 +27,49 @@ public class UsuarioService extends GenericCrudService<Usuario, Integer> impleme
         return dao;
     }
 
+    public Usuario getByNomeDeUsuario(String nomeDeUsuario){
+        return dao.getByNomeDeUsuario(nomeDeUsuario);
+    }
+
+    @Override
+    @Transactional
+    public void insert(Usuario usuario) {
+        hashSenha(usuario);
+        super.insert(usuario);
+    }
+
+    @Override
+    @Transactional
+    public void update(Usuario usuario) {
+        hashSenha(usuario);
+        super.update(usuario);
+    }
+
+    public boolean senhaPertenceAoUsuario(String nomeDeUsuario, String senha){
+
+        Usuario usuario = getByNomeDeUsuario(nomeDeUsuario);
+        if(usuario == null){
+            throw new UsernameNotFoundException(nomeDeUsuario);
+        }
+
+        return passwordEncoder.matches(senha, usuario.getSenha());
+    }
+
+    private void hashSenha(Usuario usuario){
+        usuario.setSenha(hashSenha(usuario.getSenha()));
+    }
+
+    private String hashSenha(String senha){
+        return passwordEncoder.encode(senha);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            System.out.println("fetching " + username);
-            return dao.getByNomeDeUsuario(username);
-        } catch (Exception e){
-            System.out.println("username " + username + " not found");
-            if(e.getCause() instanceof NoResultException) {
+            Usuario usuario = getByNomeDeUsuario(username);
+            if(usuario == null){
                 throw new UsernameNotFoundException(username);
             }
-            throw e;
-        }
+            return usuario;
 
     }
 }

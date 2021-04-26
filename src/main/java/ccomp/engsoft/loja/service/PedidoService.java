@@ -4,13 +4,14 @@ import ccomp.engsoft.loja.dao.GenericDao;
 import ccomp.engsoft.loja.dao.PedidoDao;
 import ccomp.engsoft.loja.model.estoque.PedidoAbastecimento;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class PedidoService extends GenericCrudService<PedidoAbastecimento, Integer>{
     final PedidoDao pedidoDao;
 

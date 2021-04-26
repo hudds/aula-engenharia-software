@@ -4,11 +4,12 @@ import ccomp.engsoft.loja.dao.CotacaoProdutoDao;
 import ccomp.engsoft.loja.dao.GenericDao;
 import ccomp.engsoft.loja.model.estoque.CotacaoProduto;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Component
+@Service
 public class CotacaoProdutoService extends GenericCrudService<CotacaoProduto, Integer>{
 
     final CotacaoProdutoDao dao;

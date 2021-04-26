@@ -6,6 +6,7 @@ import ccomp.engsoft.loja.util.DaoUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -25,6 +26,13 @@ public class UsuarioDao extends GenericDao<Usuario, Integer>{
         String jpql = String.format("select u from %s u where u.nomeDeUsuario = :pNomeDeUsuario", getEntityClass().getSimpleName());
         TypedQuery<Usuario> query = getEntityManager().createQuery(jpql, Usuario.class);
         query.setParameter("pNomeDeUsuario", nomeDeUsuario);
-        return query.getSingleResult();
+        List<Usuario> usuarios = query.getResultList();
+        if(usuarios.isEmpty()){
+            return null;
+        }
+        if(usuarios.size() > 1){
+            throw new NonUniqueResultException(String.valueOf(usuarios.size()));
+        }
+        return usuarios.get(0);
     }
 }

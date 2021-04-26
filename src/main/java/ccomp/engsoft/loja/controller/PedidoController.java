@@ -5,6 +5,7 @@ import ccomp.engsoft.loja.model.estoque.PedidoAbastecimento;
 import ccomp.engsoft.loja.model.estoque.Produto;
 import ccomp.engsoft.loja.service.PedidoService;
 import ccomp.engsoft.loja.service.ProdutoService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import javax.faces.view.ViewScoped;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Named("pedidoController")
 @ViewScoped
-@Controller
+@Component
 public class PedidoController {
 
     private final PedidoService pedidoService;

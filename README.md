@@ -67,4 +67,6 @@ INSERT INTO usuario (nome, nome_de_usuario, senha, nivel_acesso) values
 
 
 # Rodando o Programa
-Basta rodar a classe `src/main/java/ccomp.engsoft.loja.SistemaLojaApplication.java`.
+Execute a classe `src/main/java/ccomp.engsoft.loja.SistemaLojaApplication.java`. 
+
+Por padrão a aplicação irá escutar na porta 8080, portanto basta acessar http://localhost:8080/, fazer login com o usuário default que você inseriu no banco de dados e navegar pelo site. 
